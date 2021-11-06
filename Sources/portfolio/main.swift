@@ -29,6 +29,7 @@ struct PortfolioGen: ParsableCommand {
             print("Cannot decode \(url)")
             return
         }
+        print("\(portfolio)")
 
         let sourceFolderURL = URL(fileURLWithPath: sourceFolder)
         let menuItems = portfolio.sequences.menuItems()
@@ -36,7 +37,7 @@ struct PortfolioGen: ParsableCommand {
             let filePageName = sequence.pageFilename(isIndex: index == 0)
             let filePath =  sourceFolderURL.appendingPathComponent(filePageName)
             let renderedSequence = try render(
-                title: portfolio.title,
+                portfolio: portfolio,
                 sequence: sequence,
                 menuItems: menuItems
             )
@@ -45,14 +46,14 @@ struct PortfolioGen: ParsableCommand {
         print("Portfolio generated.")
     }
 
-    private func render(title: String, sequence: Sequence, menuItems: [MenuItem]) throws -> String {
+    private func render(portfolio: Portfolio, sequence: Sequence, menuItems: [MenuItem]) throws -> String {
         let fs = FileSystemLoader(paths: [ Path("templates/") ])
         let environment = Environment(loader: fs)
         return try environment.renderTemplate(
             name: "sequence.html",
-            context: ["sequence": sequence,
-                      "menuItems": menuItems,
-                      "title": title]
+            context: ["portfolio" : portfolio,
+                      "sequence": sequence,
+                      "menuItems": menuItems]
         )
     }
 

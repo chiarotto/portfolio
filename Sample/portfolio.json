@@ -3,11 +3,13 @@
 	"sequences": [
 		{
 			"title" : "Invisible Ivrea",
-			"images" : [ "img00.jpg", "img01.jpg", "img01.jpg", "img00.jpg", "img01.jpg", "img01.jpg" ]
+			"images" : [ "img00.jpg", "img01.jpg", "img01.jpg", "img00.jpg", "img01.jpg" ],
+            "short" : "IVREA BORGO CAVA"
 		},
 		{
 			"title" : "Cava",
-			"images" : [ "img01.jpg", "img01.jpg" ]
+			"images" : [ "img01.jpg", "img01.jpg" ],
+            "short" : ""
 		}
 	]
 }

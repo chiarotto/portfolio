@@ -8,6 +8,7 @@ struct Portfolio: Decodable {
 struct Sequence: Decodable {
     let title: String
     let images: [String]
+    let short: String
 }
 
 extension Sequence {
