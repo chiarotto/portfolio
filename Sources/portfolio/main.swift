@@ -5,27 +5,24 @@ import PathKit
 
 struct PortfolioGen: ParsableCommand {
 
-    @Argument(help: "folder containing portfolio.json and images")
+    @Argument(help: "folder containing portfolio folder with root folder")
     var sourceFolder: String
 
     mutating func run() throws {
         print("Run Portfolio sourceFolder = \(sourceFolder)")
-        let portfolioFileName = "portfolio.json"
-        let contents = try contentdOfDirectory(name: sourceFolder)
-        
-        guard contents.filter { $0.isDirectory }.count == 1 else {
-            print("More folders are found, organize sequences with a single root folder.")
+        let contents = try contentOfDirectory(name: sourceFolder)
+        guard contents.filter({ $0.isDirectory }).count == 1 else {
+            print("More folde(s are found, organ)ize sequences with a single root folder.")
             return
         }
         
         let rootFolderURL = contents.first { $0.isDirectory }!
-        let contentsOfRoot = try contentdOfDirectory(url: rootFolderURL)
+        let contentsOfRoot = try contentOfDirectory(url: rootFolderURL)
         print("Contents of \(rootFolderURL):")
         var sequences:[Sequence] = []
         try contentsOfRoot.forEach { url in
-            let name = url.absoluteURL.lastPathComponent
             if url.isDirectory {
-                let directoryContents = try contentdOfDirectory(url: url)
+                let directoryContents = try contentOfDirectory(url: url)
                 var urlImages: [String] = []
                 directoryContents.forEach { url in
                     if url.isImage {
@@ -83,11 +80,11 @@ struct PortfolioGen: ParsableCommand {
         return folder
     }
 
-    private mutating func contentdOfDirectory(url: URL) throws -> [URL] {
+    private mutating func contentOfDirectory(url: URL) throws -> [URL] {
         return try FileManager.default.contentsOfDirectory(at: url, includingPropertiesForKeys: nil)
     }
     
-    private mutating func contentdOfDirectory(name: String) throws -> [URL] {
+    private mutating func contentOfDirectory(name: String) throws -> [URL] {
         let folder = URL(fileURLWithPath: "./\(name)")
         return try FileManager.default.contentsOfDirectory(at: folder, includingPropertiesForKeys: nil)
     }
