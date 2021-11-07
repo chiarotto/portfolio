@@ -24,17 +24,22 @@ struct PortfolioGen: ParsableCommand {
             if url.isDirectory {
                 let directoryContents = try contentOfDirectory(url: url)
                 var urlImages: [String] = []
-                directoryContents.forEach { url in
+                var description: String?
+                try directoryContents.forEach { url in
                     if url.isImage {
                         let range = url.absoluteString.range(of: rootFolderURL.lastPathComponent)
                         let urlImage = String(url.absoluteString.suffix(from: range!.lowerBound))
                         urlImages.append(urlImage)
+                    } else if url.lastPathComponent.hasSuffix("description.txt") {
+                        print("........::: \(url.absoluteString)")
+                        description = try String(contentsOf: url, encoding: .utf8)
+                        
                     }
                 }
                 let sequence = Sequence(
                     title: "\(url.lastPathComponent.replacingOccurrences(of: "_", with: " "))",
                     images: urlImages,
-                    short: ""
+                    short: description ?? ""
                 )
                 print("Add sequence \(sequence)")
                 sequences.append(sequence)
