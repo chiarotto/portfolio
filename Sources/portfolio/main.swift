@@ -7,7 +7,7 @@ struct PortfolioGen: ParsableCommand {
 
     @Argument(help: "folder containing portfolio folder with root folder")
     var sourceFolder: String
-    
+
     @Option(help: "google analytics tracking code")
     var gatcode: String?
 
@@ -18,11 +18,11 @@ struct PortfolioGen: ParsableCommand {
             print("More folde(s are found, organ)ize sequences with a single root folder.")
             return
         }
-        
+
         let rootFolderURL = contents.first { $0.isDirectory }!
         let contentsOfRoot = try contentOfDirectory(url: rootFolderURL)
         print("Contents of \(rootFolderURL):")
-        var sequences:[Sequence] = []
+        var sequences: [Sequence] = []
         try contentsOfRoot.forEach { url in
             if url.isDirectory {
                 let directoryContents = try contentOfDirectory(url: url)
@@ -36,7 +36,7 @@ struct PortfolioGen: ParsableCommand {
                     } else if url.lastPathComponent.hasSuffix("description.txt") {
                         print("........::: \(url.absoluteString)")
                         description = try String(contentsOf: url, encoding: .utf8)
-                        
+
                     }
                 }
                 let sequence = Sequence(
@@ -52,8 +52,6 @@ struct PortfolioGen: ParsableCommand {
                                   sequences: sequences,
                                   googleAnalyticsTrackingCode: gatcode
         )
-       
-        
 
         let sourceFolderURL = URL(fileURLWithPath: sourceFolder)
         let menuItems = portfolio.sequences.menuItems()
@@ -70,14 +68,12 @@ struct PortfolioGen: ParsableCommand {
         print("Portfolio generated.")
     }
 
-  
-    
     private func render(portfolio: Portfolio, sequence: Sequence, menuItems: [MenuItem]) throws -> String {
         let fs = FileSystemLoader(paths: [ Path("templates/") ])
         let environment = Environment(loader: fs)
         return try environment.renderTemplate(
             name: "sequence.html",
-            context: ["portfolio" : portfolio,
+            context: ["portfolio": portfolio,
                       "sequence": sequence,
                       "menuItems": menuItems]
         )
@@ -94,7 +90,7 @@ struct PortfolioGen: ParsableCommand {
     private mutating func contentOfDirectory(url: URL) throws -> [URL] {
         return try FileManager.default.contentsOfDirectory(at: url, includingPropertiesForKeys: nil)
     }
-    
+
     private mutating func contentOfDirectory(name: String) throws -> [URL] {
         let folder = URL(fileURLWithPath: "./\(name)")
         return try FileManager.default.contentsOfDirectory(at: folder, includingPropertiesForKeys: nil)
@@ -103,12 +99,11 @@ struct PortfolioGen: ParsableCommand {
 
 PortfolioGen.main()
 
-
 extension URL {
     var isDirectory: Bool {
        return (try? resourceValues(forKeys: [.isDirectoryKey]))?.isDirectory == true
     }
-    
+
     var isImage: Bool {
         lastPathComponent.hasSuffix(".jpg") ||
         lastPathComponent.hasSuffix(".png") ||
