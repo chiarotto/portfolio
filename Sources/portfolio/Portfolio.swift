@@ -3,6 +3,7 @@ import Foundation
 struct Portfolio: Decodable {
     let title: String
     let sequences: [Sequence]
+    let googleAnalyticsTrackingCode: String?
 }
 
 struct Sequence: Decodable {

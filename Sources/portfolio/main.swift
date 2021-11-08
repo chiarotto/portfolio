@@ -7,6 +7,9 @@ struct PortfolioGen: ParsableCommand {
 
     @Argument(help: "folder containing portfolio folder with root folder")
     var sourceFolder: String
+    
+    @Option(help: "google analytics tracking code")
+    var gatcode: String?
 
     mutating func run() throws {
         print("Run Portfolio sourceFolder = \(sourceFolder)")
@@ -45,7 +48,10 @@ struct PortfolioGen: ParsableCommand {
                 sequences.append(sequence)
             }
         }
-        let portfolio = Portfolio(title: rootFolderURL.lastPathComponent, sequences: sequences)
+        let portfolio = Portfolio(title: rootFolderURL.lastPathComponent,
+                                  sequences: sequences,
+                                  googleAnalyticsTrackingCode: gatcode
+        )
        
         
 
