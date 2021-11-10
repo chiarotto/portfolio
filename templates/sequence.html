@@ -26,7 +26,7 @@
                     {% for menuItem in menuItems %}
                     <div class="row">
                         <div class="col">
-                            <a href="{{menuItem.href}}" class="link-dark">{{menuItem.title}}</a>
+                            <a href="{{menuItem.href}}" class="link-dark fw-lighter">{{menuItem.title}}</a>
                         </div>
                     </div>
                     {% endfor %}
@@ -48,7 +48,7 @@
                 </div>
                 <div class="col">
                     <div class="col mt-5 text-muted fw-lighter">
-                        <p><small>{{sequence.short}}</small></p>
+                        <p><small> {{sequence.description|parse}} </small></p>
                     </div>
                 </div>
             </div>

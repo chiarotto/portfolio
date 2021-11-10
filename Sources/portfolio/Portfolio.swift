@@ -9,13 +9,12 @@ struct Portfolio: Decodable {
 struct Sequence: Decodable {
     let title: String
     let images: [String]
-    let short: String
+    let description: String
 }
 
 extension Sequence {
     func pageFilename(isIndex: Bool = false) -> String {
-
-        isIndex ? "index.html" : "\(title.replacingOccurrences(of: " ", with: "_")).html"
+        return isIndex ? "index.html" : "\(title.replacingOccurrences(of: " ", with: "_")).html"
     }
 
     func menuItem(isIndex: Bool = false) -> MenuItem {
@@ -32,4 +31,13 @@ extension Array where Element == Sequence {
 struct MenuItem {
     let title: String
     let href: String
+    
+    func viewModel() -> MenuItem {
+        let titleViewModel = title.replacingOccurrences(
+            of: "[0-9]+_",
+            with: "",
+            options: [.regularExpression]
+        )
+        return MenuItem(title: titleViewModel, href: href)
+    }
 }
